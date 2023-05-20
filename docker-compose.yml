@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  api_mariadb:
+    container_name: api_mariadb
+    image: mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    expose:
+      - "3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${DB_NAME}
+      - TZ=Etc/UTC
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+
+  testsdb:
+    container_name: testsdb
+    image: mariadb
+    restart: always
+    ports:
+      - 3307:3307
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${TEST_DB}
+      - MYSQL_TCP_PORT=${TEST_DB_PORT}
+      - MYSQL_UNIX_PORT=${TEST_DB_PORT}
+      - TZ=Etc/UTC
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=${PMA_HOST}
+      - PMA_PORT=${DB_PORT}
