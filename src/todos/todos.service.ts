@@ -17,11 +17,6 @@ export class TodosService {
     private readonly todoRepository: Repository<Todo>
   ) {}
 
-  public create(createTodoDto: CreateTodoDto): Promise<Todo> {
-    const newTodo = this.todoRepository.create(createTodoDto);
-    return this.todoRepository.save(newTodo);
-  }
-
   public async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
     if (isObjectEmpty(updateTodoDto)) {
       throw new BadRequestException();
